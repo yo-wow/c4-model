@@ -1,0 +1,58 @@
+C4Context
+%%title 考勤系统上下文
+
+%% 系统边界
+Boundary(b1, "考勤系统") {
+  Boundary(b_p, "考勤系统用户组", "用户") {
+    Person(p_f, "F工厂", "F1~4工厂用户")
+    Person(p_c, "换电站工厂", "换电站工厂用户")
+    Person(p_e, "E工厂", "E0~2工厂用户")
+    Person(p_other, "...", "其他考勤组")
+  }
+
+  Boundary(b_a, "考勤系统") {
+    Boundary(b_user, "用户使用") {
+      System(s_pc, "PC端", "PC 端系统")
+      System(s_app, "移动端", "移动端系统")
+    }
+
+    Boundary(b_support, "考勤支撑") {
+      System(s_calc, "计算服务", "考勤计算服务")
+      SystemQueue(s_kn, "考勤计算队列", "考勤消息中间件服务")
+    }
+
+    Boundary(b_db, "考勤数据库", "数据库") {
+      SystemDb(s_db_b, "考勤业务库", "考勤业务数据库")
+    }
+  }
+}
+
+Boundary(b2, "依赖系统") {
+  Boundary(b_big_data, "九章系统") {
+    System(s_dmp, "DMP", "DMP 平台")
+    System_Ext(s_ds, "九章数据和标签服务")
+    System_Ext(s_people, "九章用户服务")
+    SystemDb_Ext(s_db_wh, "warehouse", "九章 warehouse 数据库")
+  }
+
+  Boundary(b_third, "其他") {
+    System_Ext(s_ndsp, "NDSP", "NDSP平台")
+    System_Ext(s_mop, "MOP", "MOP")
+  }
+}
+
+%% 关系
+%% 样式
+
+UpdateLayoutConfig($c4ShapeInRow="1", $c4BoundaryInRow="2")
+
+%% BiRel(customerA, SystemAA, "Uses")
+%% BiRel(SystemAA, SystemE, "Uses")
+%% Rel(SystemAA, SystemC, "Sends e-mails", "SMTP")
+%% Rel(SystemC, customerA, "Sends e-mails to")
+
+%% UpdateElementStyle(customerA, $fontColor="red", $bgColor="grey", $borderColor="red")
+%% UpdateRelStyle(customerA, SystemAA, $textColor="blue", $lineColor="blue", $offsetX="5")
+%% UpdateRelStyle(SystemAA, SystemE, $textColor="blue", $lineColor="blue", $offsetY="-10")
+%% UpdateRelStyle(SystemAA, SystemC, $textColor="blue", $lineColor="blue", $offsetY="-40", $offsetX="-50")
+%% UpdateRelStyle(SystemC, customerA, $textColor="red", $lineColor="red", $offsetX="-50", $offsetY="20") -->
