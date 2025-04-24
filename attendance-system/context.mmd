@@ -37,7 +37,7 @@ Boundary(b2, "依赖系统") {
 
   Boundary(b_third, "其他") {
     System_Ext(s_ndsp, "NDSP", "NDSP平台")
-    System_Ext(s_mop, "MOP", "MOP")
+    SystemQueue_Ext(s_mop, "MOP", "MOP")
   }
 }
 
@@ -55,4 +55,4 @@ UpdateLayoutConfig($c4ShapeInRow="1", $c4BoundaryInRow="2")
 %% UpdateRelStyle(customerA, SystemAA, $textColor="blue", $lineColor="blue", $offsetX="5")
 %% UpdateRelStyle(SystemAA, SystemE, $textColor="blue", $lineColor="blue", $offsetY="-10")
 %% UpdateRelStyle(SystemAA, SystemC, $textColor="blue", $lineColor="blue", $offsetY="-40", $offsetX="-50")
-%% UpdateRelStyle(SystemC, customerA, $textColor="red", $lineColor="red", $offsetX="-50", $offsetY="20") -->
+%% UpdateRelStyle(SystemC, customerA, $textColor="red", $lineColor="red", $offsetX="-50", $offsetY="20")

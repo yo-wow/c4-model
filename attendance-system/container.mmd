@@ -1,0 +1,65 @@
+C4Container
+%%title 考勤系统容器图
+
+%% 用户
+Boundary(b_p, "考勤系统用户组", "用户") {
+    Person(p_f, "F工厂", "F1~4工厂用户")
+    Person(p_c, "换电站工厂", "换电站工厂用户")
+    Person(p_e, "E工厂", "E0~2工厂用户")
+    Person(p_other, "...", "其他考勤组")
+}
+
+Container_Boundary(b_other, "其他") {
+  Container_Ext(s_ndsp, "NDSP", "...", "NDSP平台")
+  ContainerQueue(s_mop, "MOP", "...", "MOP")
+}
+
+Container_Boundary(b_attend, "考勤系统") {
+  Container(s_calc, "attendance-clock-service", "Java, Spider", "考勤计算服务")
+  ContainerQueue(s_kn, "hr-attend-fn", "Java, Spider", "考勤消息中间件服务")
+  Container(s_app_w, "hr-attend-web", "Vue", "移动端前端")
+  Container(s_app, "hr-attend-service", "Java, Spider", "移动端后端")
+  Container(s_pc_w, "hr-attend-web-pc", "Vue", "PC 端前端")
+  Container(s_pc, "hr-attend-management", "Java, Spider", "PC 端后端")
+  ContainerDb(s_db_b, "hr_attendance_prod", "MongoDB", "考勤业务数据库")
+}
+
+Container_Boundary(b_ds, "九章系统") {
+  Container(s_dmp, "DMP", "PC 页面操作", "DMP 平台")
+  Container_Ext(s_people, "hr-people-service", "...", "九章用户服务")
+  Container_Ext(s_ds, "hr-data-service-new", "...", "九章数据和标签服务")
+  ContainerDb_Ext(s_db_wh, "warehouse", "MongoDB", "九章 warehouse 数据库")
+}
+
+
+%% 关系
+Rel(s_pc_w, s_pc, "PC 端页面操作", "Https, 内网")
+Rel(s_app_w, s_app, "移动端页面操作", "Https, 外网")
+Rel(s_mop, s_kn, "考勤信息", "Kafka")
+Rel(s_ndsp, s_calc, "定时计算", "cron")
+Rel(s_ndsp, s_kn, "定时计算", "cron")
+BiRel(s_kn, s_calc, "计算请求", "Kafka")
+
+Rel(s_ds, s_db_wh, "读写数据")
+Rel(s_calc, s_db_b, "读写数据")
+Rel(s_kn, s_db_b, "读写数据")
+Rel(s_pc, s_db_b, "读写数据")
+Rel(s_app, s_db_b, "读写数据")
+
+Rel(s_app, s_ds, "", "RPC")
+Rel(s_kn, s_ds, "", "RPC")
+Rel(s_calc, s_ds, "", "RPC")
+Rel(s_pc, s_ds, "", "RPC")
+
+%% 样式
+UpdateRelStyle(s_pc_w, s_pc, $textColor="black", $lineColor="black", $offsetX="-35", $offsetY="-40")
+UpdateRelStyle(s_app_w, s_app, $textColor="black", $lineColor="black", $offsetX="-35", $offsetY="-40")
+UpdateRelStyle(s_kn, s_calc, $textColor="black", $lineColor="black", $offsetX="-30", $offsetY="-40")
+UpdateRelStyle(s_ds, s_db_wh, $textColor="black", $lineColor="black", $offsetX="-25", $offsetY="-15")
+UpdateRelStyle(s_pc, s_db_b, $textColor="black", $lineColor="black", $offsetX="-25", $offsetY="-15")
+UpdateRelStyle(s_app, s_ds, $textColor="black", $lineColor="black", $offsetX="5", $offsetY="-40")
+UpdateRelStyle(s_kn, s_ds, $textColor="black", $lineColor="black", $offsetX="-20", $offsetY="-10")
+UpdateRelStyle(s_calc, s_ds, $textColor="black", $lineColor="black", $offsetX="-20", $offsetY="50")
+UpdateRelStyle(s_pc, s_ds, $textColor="black", $lineColor="black", $offsetX="-20", $offsetY="-25")
+
+UpdateLayoutConfig($c4ShapeInRow="10", $c4BoundaryInRow="1")
