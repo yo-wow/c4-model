@@ -15,12 +15,12 @@ Container_Boundary(b_other, "其他") {
 }
 
 Container_Boundary(b_attend, "考勤系统") {
-  Container(s_calc, "attendance-clock-service", "Java, Spider", "考勤计算服务")
-  ContainerQueue(s_kn, "hr-attend-fn", "Java, Spider", "考勤消息中间件服务")
+  Container(s_calc, "attendance-clock-service", "Java, Spider, Redis, JavaTuples, Kafka", "考勤计算服务")
+  ContainerQueue(s_kn, "hr-attend-fn", "Java, Spider, Redis, Kafka, EasyPoi, dadiyang", "考勤消息中间件服务")
   Container(s_app_w, "hr-attend-web", "Vue", "移动端前端")
-  Container(s_app, "hr-attend-service", "Java, Spider", "移动端后端")
+  Container(s_app, "hr-attend-service", "Java, Spider, Redis, JavaTuples, gavaghan", "移动端后端")
   Container(s_pc_w, "hr-attend-web-pc", "Vue", "PC 端前端")
-  Container(s_pc, "hr-attend-management", "Java, Spider", "PC 端后端")
+  Container(s_pc, "hr-attend-management", "Java, Spider, Redis, JavaTuples, EasyPoi, dadiyang", "PC 端后端")
   ContainerDb(s_db_b, "hr_attendance_prod", "MongoDB", "考勤业务数据库")
 }
 
